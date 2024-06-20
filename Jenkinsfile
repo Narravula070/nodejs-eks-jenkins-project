@@ -21,21 +21,18 @@ pipeline {
      stage('Build Node JS Docker Image') {
             steps {
                 script {
-                  sh 'docker build -t devopshint/node-app-1.0 .'
+                  sh 'docker build -t muni070/nodejsapp:latest .'
                 }
             }
         }
 
 
-        stage('Deploy Docker Image to DockerHub') {
+         stage('Docker Login and Push') {
             steps {
-                script {
-                 withCredentials([string(credentialsId: 'devopshintdocker', variable: 'devopshintdocker')]) {
-                    sh 'docker login -u devopshint -p ${devopshintdocker}'
+                echo 'Logging in to Docker Hub'
+                sh 'docker login -u muni070 -p Munisai@070'
+                sh 'docker push muni070/nodejsapp:latest'
             }
-            sh 'docker push devopshint/node-app-1.0'
-        }
-            }   
         }
          
      stage('Deploying Node App to Kubernetes') {
